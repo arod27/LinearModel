@@ -1,0 +1,93 @@
+---
+title: "Linear Model"
+author: "Ariana Rodriguez"
+date: "23 October 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+myData = read.csv('RawData.csv')
+```
+
+
+# first model SIMS is a function of ARM
+
+```{r}
+model1 = lm(SIMS~ARM, data=myData)
+summary(model1)
+```
+
+predict SIMS for ARM = 88
+
+```{r}
+x = data.frame(GRIP=94, ARM=88)
+predSIMS = predict.lm(model1, x)
+print(predSIMS)
+```
+
+prediction interval for model1:
+
+```{r}
+predict(model1, x, interval="predict")
+```
+
+
+
+
+# second model SIMS is a function of GRIP
+
+```{r}
+model2 = lm(SIMS~GRIP, data=myData)
+summary(model2)
+```
+
+predict SIMS for GRIP = 94
+
+```{r}
+predictSIMS2 = predict.lm(model2, x)
+print(predictSIMS2)
+```
+
+prediction interval for model2:
+
+```{r}
+predict(model2, x, interval="predict")
+```
+
+
+# third model SIMS is a function of GRIP + ARM 
+
+```{r}
+model3 = lm(SIMS~GRIP+ARM, data=myData)
+summary(model3)
+```
+
+predict SIMS for ARM=88 and GRIP=94
+
+```{r}
+predictSIMS3 = predict.lm(model3, x)
+print(predictSIMS3)
+```
+
+prediction interval for model3:
+
+```{r}
+predict(model3, x, interval="predict")
+```
+
+comparison between models 1 and 3
+
+```{r}
+anova(model1, model3)
+```
+
+
+$H_0$ no difference in the models  
+$H_A$ there is a difference in the models
+
+Since the p-value is 4.99e-06 we reject the null hypothesis because there is a difference between model 1 and model 3. The residual sums of squares from model 3 is less than the residual sums of squares from model 1 therefore model 3 is the better fit. 
